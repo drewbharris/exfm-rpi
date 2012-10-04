@@ -1,27 +1,14 @@
 #include "qexfmview.h"
-#include <qextserialport.h>
 #include <QApplication>
 #include <QKeyEvent>
 #include <QDebug>
+#include <QWebSettings>
+#include <QWebFrame>
 
 QExfmView::QExfmView(QWidget *parent) :
     QWebView(parent)
 {
-    QExfmView::port = new QextSerialPort("/dev/ttyUSB0");
-    port->setBaudRate(BAUD9600);
-    connect(port, SIGNAL(readyRead()), this, SLOT(onDataAvailable()));
-    bool res = false;
-    res = port->open(QIODevice::ReadOnly);
 
-    if(res)
-    {
-        qDebug("Opened");
-    }
-    else
-    {
-        qDebug("Failed to connect");
-        qDebug() << port->errorString();
-    }
 }
 
 void QExfmView::keyPressEvent(QKeyEvent *event){
@@ -33,9 +20,12 @@ void QExfmView::keyPressEvent(QKeyEvent *event){
     }
 }
 
-void QExfmView::onDataAvailable(){
-    QByteArray data = QExfmView::port->readLine();
-    qDebug(data);
+void QExfmView::triggerNextSong(){
+    this->page()->mainFrame()->evaluateJavaScript("exPlayQueue.next();");
+}
+
+void QExfmView::triggerPrevSong(){
+    this->page()->mainFrame()->evaluateJavaScript("exPlayQueue.previous();");
 }
 
 void QExfmView::toggleFullScreen(){

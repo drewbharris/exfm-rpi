@@ -2,7 +2,6 @@
 #define QEXFMVIEW_H
 
 #include <QWebView>
-#include <qextserialport.h>
 
 class QExfmView : public QWebView
 {
@@ -12,12 +11,12 @@ public:
     void toggleFullScreen();
 
 private:
-    QextSerialPort * port;
     
 signals:
     
 public slots:
-    void onDataAvailable();
+    void triggerNextSong();
+    void triggerPrevSong();
 
 protected:
     virtual void keyPressEvent(QKeyEvent *event);
