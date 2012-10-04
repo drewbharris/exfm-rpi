@@ -1,15 +1,18 @@
 #include <QApplication>
-#include "html5applicationviewer.h"
+#include <QtWebKit>
+#include <QDebug>
+#include "qexfmview.h"
+#include <QtCore/QList>
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    Html5ApplicationViewer viewer;
-    viewer.setOrientation(Html5ApplicationViewer::ScreenOrientationAuto);
-    viewer.showExpanded();
-    viewer.loadUrl(QUrl(QLatin1String("http://ex.fm/labs/full-screen/grmnygrmny")));
-    viewer.showFullScreen();
+    QExfmView *view = new QExfmView();
+    view->load(QUrl("http://ex.fm/labs/full-screen/grmnygrmny"));
+    view->setFocus();
+    view->show();
+
 
     return app.exec();
 }
